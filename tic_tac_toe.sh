@@ -8,22 +8,40 @@ echo "----------------"
 echo  "press T to do a toss"
 read toss_choice
 
-if [ $toss_choice == "T" ] || [ $toss_choice == "t" ]
-then
-	if [ $(($RANDOM%2)) -eq 0 ]
-	then 
-		toss_result="T"
+Terminate(){
+	echo "---YOU'R OUT OF THE GAME---"
+}
+
+TossChoice (){
+	if [ $toss_choice == "T" ] || [ $toss_choice == "t" ]
+	then
+		if [ $(($RANDOM%2)) -eq 0 ]
+		then 
+			toss_result="T"
+		else
+			toss_result="H"
+		fi
 	else
-		toss_result="H"
-	fi
-else
-	echo "invalid input:press Enter to try again, space to exit"
+		read -p "INVALID INPUT: press Enter to try again, E to exit>> " tryexit
+		if [[ -z "$tryexit" ]]
+		then
+			TossChoice
+		elif [ $tryexit == "e" ]
+		then
+			Terminate
+		fi 
 	
-fi
+	fi
+}
+
+TossChoice
+
+
 
 #USER PLAYING
-if [ $toss_result == "T" ]
+if [ "$toss_result" == "T" ]
 then
+	echo "You won the Toss. Start playing."
 	echo "enter row(1-3), col(1-3):"
 	read -p "Row No:" r
 	read -p "Col No:" c
@@ -34,8 +52,9 @@ fi
 
 
 #COMPUTER PLAYING
-if [ $toss_result == "H" ]
+if [ "$toss_result" == "H" ]
 then
+	echo "CPU won the toss."
 	echo "computer's turn"
 fi
 
