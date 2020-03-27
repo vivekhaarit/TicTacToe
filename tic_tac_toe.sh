@@ -30,7 +30,44 @@ PlayCPU(){
 	PlayUser
 }
 
-####
+CheckRowMatch(){
+	for ((i=0;i<=6; i++ )) do
+		if [ "${ar[$i]}" == "x" ] && [ "${ar[$(($i+1))]}" == "x" ] && [ "${ar[$(($i+2))]}" == "x" ]
+		then
+			echo "                       You Won"
+			Terminate
+		fi
+		i=$(($i+2))
+	done
+}
+
+CheckColumnMatch(){
+	for ((i=0;i<=2; i++ )) do
+		if [ "${ar[$i]}" == "x" ] && [ "${ar[$(($i+3))]}" == "x" ] && [ "${ar[$(($i+6))]}" == "x" ]
+		then
+			echo "                       You Won"
+			Terminate
+		fi
+	done
+}
+
+CheckDiagonalMatch(){
+	if [ "${ar[0]}" == "x" ] && [ "${ar[4]}" == "x" ] && [ "${ar[8]}" == "x" ]
+	then
+	 	echo "                       You Won"
+	 	Terminate
+	elif [ "${ar[2]}" == "x" ] && [ "${ar[4]}" == "x" ] && [ "${ar[6]}" == "x" ]
+	then
+		echo "                       You Won"
+	 	Terminate
+	fi
+}
+
+CheckUserWinOrLose(){
+	CheckRowMatch
+	CheckColumnMatch
+	CheckDiagonalMatch
+}
 
 PlayUser(){
 	echo "enter row(1-3), col(1-3):"
@@ -40,7 +77,7 @@ PlayUser(){
 	ar[$i]="x"
 
 	ShowTheBoard
-	#CheckUserWinOrLose
+	CheckUserWinOrLose
 	PlayCPU
 }
 
