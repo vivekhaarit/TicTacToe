@@ -1,6 +1,5 @@
 #!/bin/bash
 
-
 val=(" " " " " " " " " " " " " " " " " ")
 echo "user ip: x"
 echo "cpu ip: 0"
@@ -9,7 +8,8 @@ echo  "press T to do a toss"
 read toss_choice
 
 Terminate(){
-	echo "---YOU'R OUT OF THE GAME---"
+	echo "---------------YOU'R OUT OF THE GAME--------------"
+	exit 
 }
 
 TossChoice (){
@@ -36,8 +36,6 @@ TossChoice (){
 
 TossChoice
 
-
-
 #USER PLAYING
 if [ "$toss_result" == "T" ]
 then
@@ -49,15 +47,12 @@ then
 	val[$i]="x"
 fi
 
-
-
 #COMPUTER PLAYING
 if [ "$toss_result" == "H" ]
 then
 	echo "CPU won the toss."
 	echo "computer's turn"
 fi
-
 
 echo ""
 echo " ${val[0]} | ${val[1]} | ${val[2]} "
