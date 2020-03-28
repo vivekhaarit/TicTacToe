@@ -50,6 +50,10 @@ RowCheck(){
 		then
 			echo "------------------YOU WON------------------"
 			exit
+		elif [ "${val[$i]}" == "o" ] && [ "${val[$i+1]}" == "o" ] && [ "${val[$i+2]}" == "o" ]
+		then
+			echo "----------------- CPU WON-------------------"
+			exit
 		fi
 		i=$(($i+2))
 	done
@@ -62,6 +66,10 @@ ColumnCheck(){
 		then
 			echo "------------------YOU WON------------------"
 			exit
+		elif [ "${val[$i]}" == "o" ] && [ "${val[$i+3]}" == "o" ] && [ "${val[$i+6]}" == "o" ]
+		then
+			echo "----------------- CPU WON-------------------"
+			exit
 		fi
 	done
 }
@@ -71,17 +79,73 @@ DiagonalCheck(){
 	then 
 		echo "------------------------YOU WON--------------------------"
 		exit
+	elif [ "${val[0]}" == "o" ] && [ "${val[4]}" == "o" ] && [ "${val[8]}" == "o" ]
+	then 
+		echo "------------------------CPU WON--------------------------"
+		exit
 	elif [ "${val[2]}" == "x" ] && [ "${val[4]}" == "x" ] && [ "${val[6]}" == "x" ]
 	then
 		echo "-------------------------YOU WON---------------------------"
 		exit
+	elif [ "${val[2]}" == "o" ] && [ "${val[4]}" == "o" ] && [ "${val[6]}" == "o" ]
+	then
+		echo "-------------------------CPU WON---------------------------"
+		exit
 	fi
 }
 
-CheckUserWinOrLose(){
+CPUCheckForCornersAndCentre(){
+	for ((i=0;i<5;i++))				#checking for all the corners and a centre
+	do
+		local places=$(($(($RANDOM%5))*2))
+		if [ "${val[$places]}" == " " ]
+		then 
+			val[$places]="o"
+			ShowTheBoard
+			CheckWinOrLose
+			CheckDrawMatch
+			PlayUser
+		fi
+	done	
+}
+
+CPUCheckForEdges(){
+	for ((i=0;i<4;i++))
+	do
+		local places=$(($(($RANDOM%4))*2+1))
+		if [ "${val[$places]}" == " " ]
+		then 
+			val[$places]="o"
+			ShowTheBoard
+			CheckWinOrLose
+			CheckDrawMatch
+			PlayUser
+		fi
+	done
+}
+
+CheckWinOrLose(){
 	RowCheck
 	ColumnCheck
 	DiagonalCheck
+}
+
+CheckDrawMatch(){
+	count=0;
+	for ((i=0;i<9;i++))
+	do
+		if [ "${val[$i]}" != " " ]
+		then
+			((count++))
+		else
+			break
+		fi
+	done
+	if [ $count -eq 9 ]
+	then
+		echo "------------------DRAW MATCH---------------------"
+		exit
+	fi
 }
 
 TossChoice
@@ -94,13 +158,16 @@ PlayUser(){
 	val[$i]="x"
 	
 	ShowTheBoard
-	CheckUserWinOrLose
+	CheckWinOrLose
+	CheckDrawMatch
 	PlayCPU
 }
 
 PlayCPU(){
 	echo "CPU Move..."
-	sleep .5
+	sleep 1
+	CPUCheckForCornersAndCentre
+	CPUCheckForEdges
 	ShowTheBoard
 	PlayUser
 }
@@ -119,13 +186,3 @@ then
 	echo "Computer's turn"
 	PlayCPU
 fi
-
-
-
-
-
-
-
-
-
-
