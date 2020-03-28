@@ -1,84 +1,24 @@
-#!/bin/bash 
- 
-echo "----WELCOME TO TIC TAC TOE------"
-echo "  you will play against the CPU"
+#!/bin/bash
 
-#play board creation
-ar=(" " " " " " " " " " " " " " " " " ")
-echo "----------------------------------"
-echo "user ip: x               cpu ip: 0"
-echo "----------------------------------"
+
+val=(" " " " " " " " " " " " " " " " " ")
+echo "user ip: x"
+echo "cpu ip: 0"
+echo "----------------"
 echo  "press T to do a toss"
 read toss_choice
 
 ShowTheBoard(){
-	echo " ${ar[0]} | ${ar[1]} | ${ar[2]} "
+	echo " ${val[0]} | ${val[1]} | ${val[2]} "
 	echo "---|---|---"
-	echo " ${ar[3]} | ${ar[4]} | ${ar[5]} "
+	echo " ${val[3]} | ${val[4]} | ${val[5]} "
 	echo "---|---|---"
-	echo " ${ar[6]} | ${ar[7]} | ${ar[8]} "
+	echo " ${val[6]} | ${val[7]} | ${val[8]} "
 }
 
 Terminate(){
 	echo "---------------YOU'R OUT OF THE GAME--------------"
 	exit 
-}
-
-PlayCPU(){
-	echo "cpu played"
-	ShowTheBoard
-	PlayUser
-}
-
-CheckRowMatch(){
-	for ((i=0;i<=6; i++ )) do
-		if [ "${ar[$i]}" == "x" ] && [ "${ar[$(($i+1))]}" == "x" ] && [ "${ar[$(($i+2))]}" == "x" ]
-		then
-			echo "                       You Won"
-			Terminate
-		fi
-		i=$(($i+2))
-	done
-}
-
-CheckColumnMatch(){
-	for ((i=0;i<=2; i++ )) do
-		if [ "${ar[$i]}" == "x" ] && [ "${ar[$(($i+3))]}" == "x" ] && [ "${ar[$(($i+6))]}" == "x" ]
-		then
-			echo "                       You Won"
-			Terminate
-		fi
-	done
-}
-
-CheckDiagonalMatch(){
-	if [ "${ar[0]}" == "x" ] && [ "${ar[4]}" == "x" ] && [ "${ar[8]}" == "x" ]
-	then
-	 	echo "                       You Won"
-	 	Terminate
-	elif [ "${ar[2]}" == "x" ] && [ "${ar[4]}" == "x" ] && [ "${ar[6]}" == "x" ]
-	then
-		echo "                       You Won"
-	 	Terminate
-	fi
-}
-
-CheckUserWinOrLose(){
-	CheckRowMatch
-	CheckColumnMatch
-	CheckDiagonalMatch
-}
-
-PlayUser(){
-	echo "enter row(1-3), col(1-3):"
-	read -p "Row No:" r
-	read -p "Col No:" c
-	i=$(($(( (($(($r-1)) ))*3)) + $(($c-1)) ))
-	ar[$i]="x"
-
-	ShowTheBoard
-	CheckUserWinOrLose
-	PlayCPU
 }
 
 TossChoice (){
@@ -87,19 +27,15 @@ TossChoice (){
 		if [ $(($RANDOM%2)) -eq 0 ]
 		then 
 			toss_result="T"
-			echo "You won the toss. Start playing.."
-			PlayUser
 		else
 			toss_result="H"
-			echo "CPU won the toss."
-			# PlayCPU
 		fi
 	else
 		read -p "INVALID INPUT: press Enter to try again, E to exit>> " tryexit
 		if [[ -z "$tryexit" ]]
 		then
 			TossChoice
-		elif [ "$tryexit" == "e" ]
+		elif [ $tryexit == "e" ]
 		then
 			Terminate
 		fi 
@@ -107,4 +43,89 @@ TossChoice (){
 	fi
 }
 
+RowCheck(){
+	for((i=0;i<6;i++))
+	do
+		if [ "${val[$i]}" == "x" ] && [ "${val[$i+1]}" == "x" ] && [ "${val[$i+2]}" == "x" ]
+		then
+			echo "------------------YOU WON------------------"
+			exit
+		fi
+		i=$(($i+2))
+	done
+}
+
+ColumnCheck(){
+	for((i=0;i<3;i++))
+	do
+		if [ "${val[$i]}" == "x" ] && [ "${val[$i+3]}" == "x" ] && [ "${val[$i+6]}" == "x" ]
+		then
+			echo "------------------YOU WON------------------"
+			exit
+		fi
+	done
+}
+
+DiagonalCheck(){
+	if [ "${val[0]}" == "x" ] && [ "${val[4]}" == "x" ] && [ "${val[8]}" == "x" ]
+	then 
+		echo "------------------------YOU WON--------------------------"
+		exit
+	elif [ "${val[2]}" == "x" ] && [ "${val[4]}" == "x" ] && [ "${val[6]}" == "x" ]
+	then
+		echo "-------------------------YOU WON---------------------------"
+		exit
+	fi
+}
+
+CheckUserWinOrLose(){
+	RowCheck
+	ColumnCheck
+	DiagonalCheck
+}
+
 TossChoice
+
+PlayUser(){
+	echo "enter row(1-3), col(1-3):"
+	read -p "Row No:" r
+	read -p "Col No:" c
+	i=$(($(( (($(($r-1)) ))*3)) + $(($c-1)) ))
+	val[$i]="x"
+	
+	ShowTheBoard
+	CheckUserWinOrLose
+	PlayCPU
+}
+
+PlayCPU(){
+	echo "CPU Move..."
+	sleep .5
+	ShowTheBoard
+	PlayUser
+}
+
+#USER PLAYING AT FIRST TOSS
+if [ "$toss_result" == "T" ]
+then
+	echo "You won the Toss. Start playing."
+	PlayUser
+fi
+
+#COMPUTER PLAYING AT FIRST TOSS
+if [ "$toss_result" == "H" ]
+then
+	echo "CPU won the toss."
+	echo "Computer's turn"
+	PlayCPU
+fi
+
+
+
+
+
+
+
+
+
+
