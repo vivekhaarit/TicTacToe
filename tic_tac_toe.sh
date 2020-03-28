@@ -94,13 +94,56 @@ DiagonalCheck(){
 	fi
 }
 
+CheckIfCPUCanWin(){
+	if [[ "${val[0]}" == "o"  &&  "${val[1]}" == "o" ]] || [[ "${val[6]}" == "o"  &&  "${val[4]}" == "o"  ]] || [[ "${val[8]}" == "o"  &&  "${val[5]}" == "o"  ]]
+	then
+		val[2]="o"
+		CheckWinOrLose
+	elif [[ "${val[0]}" == "o"  &&  "${val[2]}" == "o" ]] || [[ "${val[4]}" == "o"  &&  "${val[7]}" == "o"  ]]
+	then
+		val[1]="o"
+		CheckWinOrLose
+	elif [[ "${val[0]}" == "o"  &&  "${val[6]}" == "o" ]] || [[ "${val[4]}" == "o"  &&  "${val[5]}" == "o"  ]]
+	then
+		val[3]="o"
+		CheckWinOrLose
+	elif [[ "${val[0]}" == "o"  &&  "${val[3]}" == "o" ]] || [[ "${val[2]}" == "o"  &&  "${val[4]}" == "o"  ]] || [[ "${val[7]}" == "o"  &&  "${val[8]}" == "o"  ]]
+	then
+		val[6]="o"
+		CheckWinOrLose
+	elif [[ "${val[0]}" == "o"  &&  "${val[4]}" == "o" ]] || [[ "${val[6]}" == "o"  &&  "${val[7]}" == "o"  ]] || [[ "${val[2]}" == "o"  &&  "${val[5]}" == "o"  ]]
+	then
+		val[8]="o"
+		CheckWinOrLose
+	elif [[ "${val[0]}" == "o"  &&  "${val[8]}" == "o" ]] || [[ "${val[2]}" == "o"  &&  "${val[6]}" == "o"  ]] || [[ "${val[1]}" == "o"  &&  "${val[7]}" == "o"  ]] || [[ "${val[3]}" == "o"  &&  "${val[5]}" == "o" ]]
+	then
+		val[4]="o"
+		CheckWinOrLose
+	elif [[ "${val[1]}" == "o"  &&  "${val[2]}" == "o" ]] || [[ "${val[4]}" == "o"  &&  "${val[8]}" == "o"  ]] || [[ "${val[3]}" == "o"  &&  "${val[6]}" == "o"  ]]
+	then
+		val[0]="o"
+		CheckWinOrLose
+	elif [[ "${val[2]}" == "o"  &&  "${val[8]}" == "o" ]] || [[ "${val[3]}" == "o"  &&  "${val[4]}" == "o"  ]]
+	then
+		val[5]="o"
+		CheckWinOrLose
+	elif [[ "${val[1]}" == "o"  &&  "${val[4]}" == "o" ]] || [[ "${val[6]}" == "o"  &&  "${val[8]}" == "o"  ]]
+	then
+		val[7]="o"
+		CheckWinOrLose
+	fi
+}
+
 CPUCheckForCornersAndCentre(){
+	#keep cheking the corners bcz of priority
 	for ((i=0;i<5;i++))				#checking for all the corners and a centre
-	do
+	do								#Assumptions: in 5 iterations all no 0-4 will be generated
+									#making the program check for every corner 
 		local places=$(($(($RANDOM%5))*2))
 		if [ "${val[$places]}" == " " ]
 		then 
 			val[$places]="o"
+
 			ShowTheBoard
 			CheckWinOrLose
 			CheckDrawMatch
@@ -110,7 +153,7 @@ CPUCheckForCornersAndCentre(){
 }
 
 CPUCheckForEdges(){
-	for ((i=0;i<4;i++))
+	for ((i=0;i<4;i++))			#assume: in 4 iterations all no for edges will be generated
 	do
 		local places=$(($(($RANDOM%4))*2+1))
 		if [ "${val[$places]}" == " " ]
@@ -166,6 +209,7 @@ PlayUser(){
 PlayCPU(){
 	echo "CPU Move..."
 	sleep 1
+	CheckIfCPUCanWin
 	CPUCheckForCornersAndCentre
 	CPUCheckForEdges
 	ShowTheBoard
