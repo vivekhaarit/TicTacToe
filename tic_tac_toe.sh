@@ -1,6 +1,6 @@
 #!/bin/bash
 
-
+CPU_STATUS=0
 val=(" " " " " " " " " " " " " " " " " ")
 echo "user ip: x"
 echo "cpu ip: 0"
@@ -99,42 +99,52 @@ CheckIfCPUCanWin(){
 	if [[ "${val[0]}" == "o"  &&  "${val[8]}" == "o" ]] || [[ "${val[2]}" == "o"  &&  "${val[6]}" == "o"  ]] || [[ "${val[1]}" == "o"  &&  "${val[7]}" == "o"  ]] || [[ "${val[3]}" == "o"  &&  "${val[5]}" == "o" ]]
 	then
 		val[4]="o"
-		CheckWinOrLose
+		ShowTheBoard
+		CheckWinOrLose  #for showing the win message
 	#Four corners, each corner can be filled in 3ways
 	elif [[ "${val[0]}" == "o"  &&  "${val[1]}" == "o" ]] || [[ "${val[6]}" == "o"  &&  "${val[4]}" == "o"  ]] || [[ "${val[8]}" == "o"  &&  "${val[5]}" == "o"  ]]
 	then
 		val[2]="o"
-		CheckWinOrLose
+		ShowTheBoard
+		CheckWinOrLose	#for showing the win message
 	elif [[ "${val[0]}" == "o"  &&  "${val[3]}" == "o" ]] || [[ "${val[2]}" == "o"  &&  "${val[4]}" == "o"  ]] || [[ "${val[7]}" == "o"  &&  "${val[8]}" == "o"  ]]
 	then
 		val[6]="o"
-		CheckWinOrLose
+		ShowTheBoard
+		CheckWinOrLose	#for showing the win message
 	elif [[ "${val[0]}" == "o"  &&  "${val[4]}" == "o" ]] || [[ "${val[6]}" == "o"  &&  "${val[7]}" == "o"  ]] || [[ "${val[2]}" == "o"  &&  "${val[5]}" == "o"  ]]
 	then
 		val[8]="o"
-		CheckWinOrLose
+		ShowTheBoard
+		CheckWinOrLose	#for showing the win message
 	elif [[ "${val[1]}" == "o"  &&  "${val[2]}" == "o" ]] || [[ "${val[4]}" == "o"  &&  "${val[8]}" == "o"  ]] || [[ "${val[3]}" == "o"  &&  "${val[6]}" == "o"  ]]
 	then
 		val[0]="o"
-		CheckWinOrLose
+		ShowTheBoard
+		CheckWinOrLose	#for showing the win message
 	#Four Edges, each can be filled in 2ways
 	elif [[ "${val[0]}" == "o"  &&  "${val[2]}" == "o" ]] || [[ "${val[4]}" == "o"  &&  "${val[7]}" == "o"  ]]
 	then
 		val[1]="o"
-		CheckWinOrLose
+		ShowTheBoard
+		CheckWinOrLose	#for showing the win message
 	elif [[ "${val[0]}" == "o"  &&  "${val[6]}" == "o" ]] || [[ "${val[4]}" == "o"  &&  "${val[5]}" == "o"  ]]
 	then
 		val[3]="o"
-		CheckWinOrLose
+		ShowTheBoard
+		CheckWinOrLose	#for showing the win message
 
 	elif [[ "${val[2]}" == "o"  &&  "${val[8]}" == "o" ]] || [[ "${val[3]}" == "o"  &&  "${val[4]}" == "o"  ]]
 	then
 		val[5]="o"
-		CheckWinOrLose
+		ShowTheBoard
+		CheckWinOrLose	#for showing the win message
 	elif [[ "${val[1]}" == "o"  &&  "${val[4]}" == "o" ]] || [[ "${val[6]}" == "o"  &&  "${val[8]}" == "o"  ]]
 	then
 		val[7]="o"
-		CheckWinOrLose
+		ShowTheBoard
+		CheckWinOrLose	#for showing the win message
+
 	#if cpu can't win then it will block the user
 	else
 		CPUBlockingTheUser
@@ -142,80 +152,82 @@ CheckIfCPUCanWin(){
 }
 
 CPUBlockingTheUser(){
+
 	#blicking centre
 	if [[ "${val[0]}" == "x"  &&  "${val[8]}" == "x" ]] || [[ "${val[2]}" == "x"  &&  "${val[6]}" == "x"  ]] || [[ "${val[1]}" == "x"  &&  "${val[7]}" == "x"  ]] || [[ "${val[3]}" == "x"  &&  "${val[5]}" == "x" ]]
 	then
 		val[4]="o"
-		CheckWinOrLose
+		CPU_STATUS="userblocked"
+		ShowTheBoard
+
 	#blicking the corners
 	elif [[ "${val[0]}" == "x"  &&  "${val[1]}" == "x" ]] || [[ "${val[6]}" == "x"  &&  "${val[4]}" == "x"  ]] || [[ "${val[8]}" == "x"  &&  "${val[5]}" == "x"  ]]
 	then
 		val[2]="o"
-		CheckWinOrLose
+		CPU_STATUS="userblocked"
+		ShowTheBoard
 	elif [[ "${val[0]}" == "x"  &&  "${val[3]}" == "x" ]] || [[ "${val[2]}" == "x"  &&  "${val[4]}" == "x"  ]] || [[ "${val[7]}" == "x"  &&  "${val[8]}" == "x"  ]]
 	then
 		val[6]="o"
-		CheckWinOrLose
+		CPU_STATUS="userblocked"
+		ShowTheBoard
 	elif [[ "${val[0]}" == "x"  &&  "${val[4]}" == "x" ]] || [[ "${val[6]}" == "x"  &&  "${val[7]}" == "x"  ]] || [[ "${val[2]}" == "x"  &&  "${val[5]}" == "x"  ]]
 	then
 		val[8]="o"
-		CheckWinOrLose
+		CPU_STATUS="userblocked"
+		ShowTheBoard
 	elif [[ "${val[1]}" == "x"  &&  "${val[2]}" == "x" ]] || [[ "${val[4]}" == "x"  &&  "${val[8]}" == "x"  ]] || [[ "${val[3]}" == "x"  &&  "${val[6]}" == "x"  ]]
 	then
 		val[0]="o"
-		CheckWinOrLose
+		CPU_STATUS="userblocked"
+		ShowTheBoard
+
 	#Four Edges, each can be filled in 2ways
 	elif [[ "${val[0]}" == "x"  &&  "${val[2]}" == "x" ]] || [[ "${val[4]}" == "x"  &&  "${val[7]}" == "x"  ]]
 	then
 		val[1]="o"
-		CheckWinOrLose
+		CPU_STATUS="userblocked"
+		ShowTheBoard
 	elif [[ "${val[0]}" == "x"  &&  "${val[6]}" == "x" ]] || [[ "${val[4]}" == "x"  &&  "${val[5]}" == "x"  ]]
 	then
 		val[3]="o"
-		CheckWinOrLose
-
+		CPU_STATUS="userblocked"
+		ShowTheBoard
 	elif [[ "${val[2]}" == "x"  &&  "${val[8]}" == "x" ]] || [[ "${val[3]}" == "x"  &&  "${val[4]}" == "x"  ]]
 	then
 		val[5]="o"
-		CheckWinOrLose
+		CPU_STATUS="userblocked"
+		ShowTheBoard
 	elif [[ "${val[1]}" == "x"  &&  "${val[4]}" == "x" ]] || [[ "${val[6]}" == "x"  &&  "${val[8]}" == "x"  ]]
 	then
 		val[7]="o"
-		CheckWinOrLose
+		CPU_STATUS="userblocked"
+		ShowTheBoard
 	fi
 }
 
 CPUCheckForCornersAndCentre(){
-	#keep cheking the corners bcz of priority
-	for ((i=0;i<5;i++))				#checking for all the corners and a centre
-	do								#Assumptions: in 5 iterations all no 0-4 will be generated
-									#making the program check for every corner 
-		local places=$(($(($RANDOM%5))*2))
-		if [ "${val[$places]}" == " " ]
-		then 
-			val[$places]="o"
+	local places=$(($(($RANDOM%5))*2))
+	if [ "${val[$places]}" == " " ]
+	then 
+		val[$places]="o"
 
-			ShowTheBoard
-			CheckWinOrLose
-			CheckDrawMatch
-			PlayUser
-		fi
-	done	
+		ShowTheBoard
+		CheckWinOrLose
+		CheckDrawMatch
+	fi
+	CPU_STATUS="cornersAbsent"	
 }
 
 CPUCheckForEdges(){
-	for ((i=0;i<4;i++))			#assume: in 4 iterations all no for edges will be generated
-	do
-		local places=$(($(($RANDOM%4))*2+1))
-		if [ "${val[$places]}" == " " ]
-		then 
-			val[$places]="o"
-			ShowTheBoard
-			CheckWinOrLose
-			CheckDrawMatch
-			PlayUser
-		fi
-	done
+	local places=$(($(($RANDOM%4))*2+1))
+	if [ "${val[$places]}" == " " ]
+	then 
+		val[$places]="o"
+		ShowTheBoard
+		CheckWinOrLose
+		CheckDrawMatch
+	fi
 }
 
 CheckWinOrLose(){
@@ -261,10 +273,17 @@ PlayCPU(){
 	echo "CPU Move..."
 	sleep 1
 	CheckIfCPUCanWin
-	CPUCheckForCornersAndCentre
-	CPUCheckForEdges
-	ShowTheBoard
-	PlayUser
+	if [ "$CPU_STATUS" == "userblocked" ]
+	then
+		PlayUser
+	else
+		CPUCheckForCornersAndCentre
+		if [ "$CPU_STATUS" == "cornersAbsent" ]
+		then
+			CPUCheckForEdges
+		fi
+		PlayUser
+	fi
 }
 
 #USER PLAYING AT FIRST TOSS
