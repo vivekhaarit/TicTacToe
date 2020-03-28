@@ -135,6 +135,9 @@ CheckIfCPUCanWin(){
 	then
 		val[7]="o"
 		CheckWinOrLose
+	#if cpu can't win then it will block the user
+	else
+		CPUBlockingTheUser
 	fi
 }
 
@@ -258,7 +261,6 @@ PlayCPU(){
 	echo "CPU Move..."
 	sleep 1
 	CheckIfCPUCanWin
-	CPUBlockingTheUser
 	CPUCheckForCornersAndCentre
 	CPUCheckForEdges
 	ShowTheBoard
