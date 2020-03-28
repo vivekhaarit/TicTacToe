@@ -95,17 +95,15 @@ DiagonalCheck(){
 }
 
 CheckIfCPUCanWin(){
-	if [[ "${val[0]}" == "o"  &&  "${val[1]}" == "o" ]] || [[ "${val[6]}" == "o"  &&  "${val[4]}" == "o"  ]] || [[ "${val[8]}" == "o"  &&  "${val[5]}" == "o"  ]]
+	#centre can be filled in 4ways
+	if [[ "${val[0]}" == "o"  &&  "${val[8]}" == "o" ]] || [[ "${val[2]}" == "o"  &&  "${val[6]}" == "o"  ]] || [[ "${val[1]}" == "o"  &&  "${val[7]}" == "o"  ]] || [[ "${val[3]}" == "o"  &&  "${val[5]}" == "o" ]]
+	then
+		val[4]="o"
+		CheckWinOrLose
+	#Four corners, each corner can be filled in 3ways
+	elif [[ "${val[0]}" == "o"  &&  "${val[1]}" == "o" ]] || [[ "${val[6]}" == "o"  &&  "${val[4]}" == "o"  ]] || [[ "${val[8]}" == "o"  &&  "${val[5]}" == "o"  ]]
 	then
 		val[2]="o"
-		CheckWinOrLose
-	elif [[ "${val[0]}" == "o"  &&  "${val[2]}" == "o" ]] || [[ "${val[4]}" == "o"  &&  "${val[7]}" == "o"  ]]
-	then
-		val[1]="o"
-		CheckWinOrLose
-	elif [[ "${val[0]}" == "o"  &&  "${val[6]}" == "o" ]] || [[ "${val[4]}" == "o"  &&  "${val[5]}" == "o"  ]]
-	then
-		val[3]="o"
 		CheckWinOrLose
 	elif [[ "${val[0]}" == "o"  &&  "${val[3]}" == "o" ]] || [[ "${val[2]}" == "o"  &&  "${val[4]}" == "o"  ]] || [[ "${val[7]}" == "o"  &&  "${val[8]}" == "o"  ]]
 	then
@@ -115,19 +113,69 @@ CheckIfCPUCanWin(){
 	then
 		val[8]="o"
 		CheckWinOrLose
-	elif [[ "${val[0]}" == "o"  &&  "${val[8]}" == "o" ]] || [[ "${val[2]}" == "o"  &&  "${val[6]}" == "o"  ]] || [[ "${val[1]}" == "o"  &&  "${val[7]}" == "o"  ]] || [[ "${val[3]}" == "o"  &&  "${val[5]}" == "o" ]]
-	then
-		val[4]="o"
-		CheckWinOrLose
 	elif [[ "${val[1]}" == "o"  &&  "${val[2]}" == "o" ]] || [[ "${val[4]}" == "o"  &&  "${val[8]}" == "o"  ]] || [[ "${val[3]}" == "o"  &&  "${val[6]}" == "o"  ]]
 	then
 		val[0]="o"
 		CheckWinOrLose
+	#Four Edges, each can be filled in 2ways
+	elif [[ "${val[0]}" == "o"  &&  "${val[2]}" == "o" ]] || [[ "${val[4]}" == "o"  &&  "${val[7]}" == "o"  ]]
+	then
+		val[1]="o"
+		CheckWinOrLose
+	elif [[ "${val[0]}" == "o"  &&  "${val[6]}" == "o" ]] || [[ "${val[4]}" == "o"  &&  "${val[5]}" == "o"  ]]
+	then
+		val[3]="o"
+		CheckWinOrLose
+
 	elif [[ "${val[2]}" == "o"  &&  "${val[8]}" == "o" ]] || [[ "${val[3]}" == "o"  &&  "${val[4]}" == "o"  ]]
 	then
 		val[5]="o"
 		CheckWinOrLose
 	elif [[ "${val[1]}" == "o"  &&  "${val[4]}" == "o" ]] || [[ "${val[6]}" == "o"  &&  "${val[8]}" == "o"  ]]
+	then
+		val[7]="o"
+		CheckWinOrLose
+	fi
+}
+
+CPUBlockingTheUser(){
+	#blicking centre
+	if [[ "${val[0]}" == "x"  &&  "${val[8]}" == "x" ]] || [[ "${val[2]}" == "x"  &&  "${val[6]}" == "x"  ]] || [[ "${val[1]}" == "x"  &&  "${val[7]}" == "x"  ]] || [[ "${val[3]}" == "x"  &&  "${val[5]}" == "x" ]]
+	then
+		val[4]="o"
+		CheckWinOrLose
+	#blicking the corners
+	elif [[ "${val[0]}" == "x"  &&  "${val[1]}" == "x" ]] || [[ "${val[6]}" == "x"  &&  "${val[4]}" == "x"  ]] || [[ "${val[8]}" == "x"  &&  "${val[5]}" == "x"  ]]
+	then
+		val[2]="o"
+		CheckWinOrLose
+	elif [[ "${val[0]}" == "x"  &&  "${val[3]}" == "x" ]] || [[ "${val[2]}" == "x"  &&  "${val[4]}" == "x"  ]] || [[ "${val[7]}" == "x"  &&  "${val[8]}" == "x"  ]]
+	then
+		val[6]="o"
+		CheckWinOrLose
+	elif [[ "${val[0]}" == "x"  &&  "${val[4]}" == "x" ]] || [[ "${val[6]}" == "x"  &&  "${val[7]}" == "x"  ]] || [[ "${val[2]}" == "x"  &&  "${val[5]}" == "x"  ]]
+	then
+		val[8]="o"
+		CheckWinOrLose
+	elif [[ "${val[1]}" == "x"  &&  "${val[2]}" == "x" ]] || [[ "${val[4]}" == "x"  &&  "${val[8]}" == "x"  ]] || [[ "${val[3]}" == "x"  &&  "${val[6]}" == "x"  ]]
+	then
+		val[0]="o"
+		CheckWinOrLose
+	#Four Edges, each can be filled in 2ways
+	elif [[ "${val[0]}" == "x"  &&  "${val[2]}" == "x" ]] || [[ "${val[4]}" == "x"  &&  "${val[7]}" == "x"  ]]
+	then
+		val[1]="o"
+		CheckWinOrLose
+	elif [[ "${val[0]}" == "x"  &&  "${val[6]}" == "x" ]] || [[ "${val[4]}" == "x"  &&  "${val[5]}" == "x"  ]]
+	then
+		val[3]="o"
+		CheckWinOrLose
+
+	elif [[ "${val[2]}" == "x"  &&  "${val[8]}" == "x" ]] || [[ "${val[3]}" == "x"  &&  "${val[4]}" == "x"  ]]
+	then
+		val[5]="o"
+		CheckWinOrLose
+	elif [[ "${val[1]}" == "x"  &&  "${val[4]}" == "x" ]] || [[ "${val[6]}" == "x"  &&  "${val[8]}" == "x"  ]]
 	then
 		val[7]="o"
 		CheckWinOrLose
@@ -210,6 +258,7 @@ PlayCPU(){
 	echo "CPU Move..."
 	sleep 1
 	CheckIfCPUCanWin
+	CPUBlockingTheUser
 	CPUCheckForCornersAndCentre
 	CPUCheckForEdges
 	ShowTheBoard
