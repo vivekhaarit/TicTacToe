@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/bash 
 
 CPU_STATUS=0
 val=(" " " " " " " " " " " " " " " " " ")
@@ -215,8 +215,9 @@ CPUCheckForCornersAndCentre(){
 		ShowTheBoard
 		CheckWinOrLose
 		CheckDrawMatch
+	else
+		CPU_STATUS="cornersAbsent"	
 	fi
-	CPU_STATUS="cornersAbsent"	
 }
 
 CPUCheckForEdges(){
